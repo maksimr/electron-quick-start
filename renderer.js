@@ -1,12 +1,11 @@
 // This file is required by the index.html file and will
 // be executed in the renderer process for that window.
 // All of the Node.js APIs are available in this process.
-const React = require('react');
-const e = React.createElement;
-const ReactDOM = require('react-dom');
+import React, {createElement as e} from 'react';
+import {render} from 'react-dom';
 
 
-const App = function() {
+const App = () => {
   return e('div', null,
     e('div', null, 'We are using Node.js ', process.versions.node),
     e('div', null, 'Chromium ', process.versions.chrome),
@@ -21,8 +20,8 @@ const rootElement =
   document.getElementById('root') ||
   document.createElement('div');
 
-function render() {
-  ReactDOM.render(e(App), rootElement);
+function renderApp() {
+  render(e(App), rootElement);
 }
 
-render();
+renderApp();

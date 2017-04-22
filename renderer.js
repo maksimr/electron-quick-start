@@ -16,7 +16,7 @@ const App = () => {
 };
 
 
-const rootElement =
+export const rootElement =
   document.getElementById('root') ||
   document.createElement('div');
 

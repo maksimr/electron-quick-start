@@ -12,11 +12,9 @@ module.exports = {
     path: outputDir(),
     filename: 'build/renderer.js'
   },
-  plugins: [
-    isProduction() ?
-      createClosureCompiler() :
-      new WriteFilePlugin()
-  ],
+  plugins: []
+    .concat(isDevServer() ? [new WriteFilePlugin()] : [])
+    .concat(isProduction() ? createClosureCompiler() : []),
 
   devServer: {
     contentBase: outputDir()
@@ -31,6 +29,12 @@ function outputDir() {
 
 function isProduction() {
   return process.env.NODE_ENV === 'production';
+}
+
+function isDevServer() {
+  return Boolean(process.argv.find(function(arg) {
+    return arg.indexOf('webpack-dev-server') > -1;
+  }));
 }
 
 function createClosureCompiler() {

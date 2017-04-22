@@ -10,7 +10,7 @@ module.exports = {
     path: outputDir(),
     filename: 'build/renderer.js'
   },
-  plugins: [new WriteFilePlugin()],
+  plugins: isDevServer() ? [new WriteFilePlugin()] : [],
 
   devServer: {
     contentBase: outputDir()
@@ -21,4 +21,10 @@ module.exports = {
 function outputDir() {
   return require('path')
     .resolve(__dirname, './public');
+}
+
+function isDevServer() {
+  return Boolean(process.argv.find(function(arg) {
+    return arg.indexOf('webpack-dev-server') > -1;
+  }));
 }

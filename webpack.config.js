@@ -1,6 +1,5 @@
 const nodeExternals = require('webpack-node-externals');
 const WriteFilePlugin = require('write-file-webpack-plugin');
-const ClosureCompilerPlugin = require('webpack-closure-compiler');
 
 module.exports = {
   entry: './renderer.js',
@@ -13,8 +12,7 @@ module.exports = {
     filename: 'build/renderer.js'
   },
   plugins: []
-    .concat(isDevServer() ? [new WriteFilePlugin()] : [])
-    .concat(isProduction() ? createClosureCompiler() : []),
+    .concat(isDevServer() ? [new WriteFilePlugin()] : []),
 
   devServer: {
     contentBase: outputDir()
@@ -35,20 +33,4 @@ function isDevServer() {
   return Boolean(process.argv.find(function(arg) {
     return arg.indexOf('webpack-dev-server') > -1;
   }));
-}
-
-function createClosureCompiler() {
-
-  // https://github.com/webpack/webpack/issues/2545
-  // Use google closure compiler because
-  // bundled with webpack Uglify doesn't support es6
-  return new ClosureCompilerPlugin({
-    compiler: {
-      language_in: 'ECMASCRIPT6',
-      language_out: 'ECMASCRIPT5',
-      compilation_level: 'SIMPLE',
-      create_source_map: true
-    },
-    concurrency: 3,
-  });
 }

@@ -13,6 +13,17 @@
   </body>
 
   <script>
+    if (process.env.NODE_ENV !== 'production') {
+      const watcher = require('fs').watch(require('path').resolve(__dirname, '../'), {recursive: true}, (eventType, filename) => {
+        if (/\.(js|html|css)$/.test(filename)) {
+          watcher.close();
+          location.reload();
+        }
+      });
+    }
+  </script>
+
+  <script>
     // You can also require other files to run in this process
     require('../renderer.js')
   </script>
